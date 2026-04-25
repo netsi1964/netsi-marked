@@ -66,9 +66,12 @@ body {
   gap: 1rem;
 }
 
+
 .demo-controls label {
-  display: grid;
+  display: flex;
   gap: 0.35rem;
+  align-items: center;
+  justify-content: center;
   font-weight: 650;
 }
 
