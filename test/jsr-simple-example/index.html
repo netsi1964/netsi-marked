@@ -4,15 +4,133 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>netsi-marked JSR example</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap"
+    />
     <link rel="stylesheet" href="https://unpkg.com/netsi-marked@0.1.0/styles/netsi-marked.css" />
     <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.11.1/styles/github.min.css" />
+    <style>
+      :root {
+        --demo-accent: #0a67dd;
+        --demo-surface: #f8fafc;
+        --demo-border: #d8dee7;
+      }
+
+      body {
+        font-family: 'IBM Plex Sans', sans-serif;
+        background:
+          radial-gradient(circle at 100% 0%, #dbeafe 0%, transparent 38%),
+          radial-gradient(circle at 0% 100%, #e2f3ff 0%, transparent 32%),
+          #f6f8fb;
+      }
+
+      .demo-shell {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .demo-controls {
+        display: flex;
+        align-items: center;
+      }
+
+      .headless-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        border: 1px solid var(--demo-border);
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--demo-surface) 88%, white);
+        padding: 0.35rem 0.45rem 0.35rem 0.9rem;
+        box-shadow: 0 8px 24px rgb(2 12 27 / 8%);
+      }
+
+      .headless-toggle input {
+        position: absolute;
+        inline-size: 1px;
+        block-size: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+      }
+
+      .headless-toggle__label {
+        font-size: 0.9rem;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+      }
+
+      .headless-toggle__track {
+        inline-size: 3rem;
+        block-size: 1.7rem;
+        border-radius: 999px;
+        border: 1px solid var(--demo-border);
+        background: #e8edf3;
+        position: relative;
+        transition: background-color 180ms ease;
+      }
+
+      .headless-toggle__thumb {
+        position: absolute;
+        inset-block-start: 0.12rem;
+        inset-inline-start: 0.12rem;
+        inline-size: 1.35rem;
+        block-size: 1.35rem;
+        border-radius: 999px;
+        background: white;
+        box-shadow: 0 2px 8px rgb(2 12 27 / 24%);
+        transition: transform 180ms ease;
+      }
+
+      .headless-toggle input:checked + .headless-toggle__label + .headless-toggle__track {
+        background: color-mix(in srgb, var(--demo-accent) 40%, white);
+      }
+
+      .headless-toggle input:checked + .headless-toggle__label + .headless-toggle__track .headless-toggle__thumb {
+        transform: translateX(1.3rem);
+      }
+
+      .headless-toggle input:focus-visible + .headless-toggle__label + .headless-toggle__track {
+        outline: 3px solid color-mix(in srgb, var(--demo-accent) 35%, transparent);
+        outline-offset: 2px;
+      }
+
+      /* Fallback: emulate headless mode for published versions that do not support the attribute yet. */
+      netsi-marked[headless]::part(toolbar) {
+        display: none;
+      }
+
+      netsi-marked[headless]::part(wrapper) {
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        overflow: visible;
+      }
+
+      netsi-marked[headless]::part(content-slot) {
+        padding: 0;
+      }
+    </style>
     <script type="module">
       import 'https://esm.sh/jsr/@netsi/marked';
 
       await customElements.whenDefined('netsi-marked');
       const element = document.querySelector('netsi-marked');
       const markdownTemplate = document.getElementById('demo-markdown');
+      const headlessToggle = document.getElementById('headless-toggle');
       element.markdown = markdownTemplate.textContent.trim();
+
+      const syncHeadlessMode = () => {
+        const enabled = headlessToggle.checked;
+        element.toggleAttribute('headless', enabled);
+        element.toggleAttribute('plain', enabled);
+      };
+
+      headlessToggle.addEventListener('change', syncHeadlessMode);
+      syncHeadlessMode();
     </script>
   </head>
   <body>
@@ -91,6 +209,13 @@ netsi-marked {
     </script>
     <main class="demo-shell">
       <h1>JSR usage</h1>
+      <div class="demo-controls">
+        <label class="headless-toggle" for="headless-toggle">
+          <input id="headless-toggle" type="checkbox" checked />
+          <span class="headless-toggle__label">Headless mode</span>
+          <span class="headless-toggle__track" aria-hidden="true"><span class="headless-toggle__thumb"></span></span>
+        </label>
+      </div>
       <netsi-marked plugins="callouts,mermaid,code-enhance,heading-anchors"></netsi-marked>
     </main>
   </body>

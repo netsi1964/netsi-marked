@@ -196,6 +196,11 @@ The `npm-simple-example` and `jsr-simple-example` load published packages throug
 1. npm: `https://esm.sh/netsi-marked`
 2. JSR: `https://esm.sh/jsr/@netsi/marked`
 
+Quick online demos:
+
+1. JSR simple demo: https://codepen.io/netsi1964/pen/jEMgyzr
+2. NPM simple demo: https://codepen.io/netsi1964/pen/dPpxNeQ
+
 ## CodePen Pen 2.0 notes
 
 The complete demo is already split into multiple files. For CodePen Pen 2.0, copy these files:
