@@ -1,0 +1,60 @@
+{
+  "name": "netsi-marked",
+  "version": "0.1.0",
+  "description": "A vanilla JS custom element that renders Markdown with marked, plugins, Mermaid diagrams, a11y, i18n, CSS variables and copy actions.",
+  "type": "module",
+  "module": "./src/index.js",
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./element": "./src/netsi-marked.js",
+    "./built-ins": "./src/built-ins.js",
+    "./plugins": "./src/plugins.js",
+    "./locales": "./src/locales.js",
+    "./styles": "./styles/netsi-marked.css"
+  },
+  "files": [
+    "src",
+    "styles",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "demo": "npx serve .",
+    "publish:jsr": "npx jsr publish --dry-run",
+    "publish:jsr:release": "npx jsr publish",
+    "publish:npm": "npm publish --access public --dry-run",
+    "publish:npm:release": "npm publish --access public"
+  },
+  "keywords": [
+    "web-components",
+    "custom-elements",
+    "markdown",
+    "marked",
+    "mermaid",
+    "vanilla-js",
+    "a11y",
+    "i18n"
+  ],
+  "author": "Sten Hougaard",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/netsi1964/netsi-marked.git"
+  },
+  "bugs": {
+    "url": "https://github.com/netsi1964/netsi-marked/issues"
+  },
+  "homepage": "https://github.com/netsi1964/netsi-marked#readme",
+  "license": "MIT",
+  "dependencies": {
+    "@highlightjs/cdn-assets": "^11.11.1",
+    "dompurify": "^3.3.0",
+    "marked": "^16.4.1",
+    "mermaid": "^11.12.0"
+  },
+  "devDependencies": {
+    "jsr": "^0.14.3",
+    "serve": "^14.2.5"
+  }
+}

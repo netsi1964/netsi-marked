@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="da" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>netsi-marked complete demo</title>
+    <link rel="stylesheet" href="../../styles/netsi-marked.css" />
+    <script type="module" src="./main.js"></script>
+  </head>
+  <body>
+    <a href="#playground" class="skip-link">Spring til playground</a>
+    <main class="demo-shell">
+      <header class="demo-header">
+        <div>
+          <h1>netsi-marked</h1>
+          <p>MDN-inspireret playground for Markdown, Mermaid, kodeformatering, i18n, events og CSS-variabler.</p>
+        </div>
+        <button id="themeToggle" type="button" aria-pressed="false">Skift tema</button>
+      </header>
+
+      <section id="playground" class="demo-grid" aria-label="Interaktiv demo">
+        <form class="demo-card demo-controls">
+          <label>
+            Markdown
+            <textarea id="markdownInput" spellcheck="false"></textarea>
+          </label>
+
+          <label>
+            Locale
+            <select id="localeSelect">
+              <option value="da">Dansk</option>
+              <option value="en">English</option>
+            </select>
+          </label>
+
+          <label>
+            Plugins
+            <select id="pluginSelect" multiple size="5">
+              <option selected value="callouts">Callouts</option>
+              <option selected value="mermaid">Mermaid</option>
+              <option selected value="code-enhance">Code enhance</option>
+              <option selected value="heading-anchors">Heading anchors</option>
+              <option selected value="external-links">External links</option>
+            </select>
+          </label>
+
+          <label>
+            Accent color
+            <input id="accentInput" type="color" value="#0969da" />
+          </label>
+        </form>
+
+        <section class="demo-card">
+          <h2>Try it</h2>
+          <netsi-marked id="preview" locale="da" plugins="callouts,mermaid,code-enhance,heading-anchors,external-links"></netsi-marked>
+
+          <h2>Ready-to-copy kode</h2>
+          <pre class="ready-code" id="readyCode"></pre>
+
+          <h2>Custom events</h2>
+          <div id="eventLog" class="event-log" aria-live="polite"></div>
+        </section>
+      </section>
+
+      <section class="demo-card" style="margin-block-start: 1rem">
+        <h2>Customized built-ins og <code>is="..."</code></h2>
+        <p>
+          Den autonome komponent bruger <code>&lt;netsi-marked&gt;</code>. Samme navn kan ikke samtidig registreres som customized built-in.
+          Derfor bruger built-in-demoen et andet navn: <code>is="netsi-marked-textarea"</code>. Bemærk også, at Safari ikke understøtter customized built-ins.
+        </p>
+        <textarea is="netsi-marked-textarea" preview-target="#preview" rows="5"># Live fra textarea
+
+Dette virker kun i browsere med customized built-ins.</textarea>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "@netsi/marked",
+  "version": "0.1.0",
+  "license": "MIT",
+  "exports": {
+    ".": "./src/index.js",
+    "./element": "./src/netsi-marked.js",
+    "./built-ins": "./src/built-ins.js",
+    "./plugins": "./src/plugins.js",
+    "./locales": "./src/locales.js"
+  },
+  "publish": {
+    "include": [
+      "src/**/*.js",
+      "styles/**/*.css",
+      "README.md",
+      "LICENSE"
+    ]
+  }
+}
