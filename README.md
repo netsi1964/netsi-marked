@@ -61,6 +61,8 @@ await element.copyFormatted();
 | `theme` | `theme="dark"` | Hint for Mermaid/theme-aware plugins. |
 | `sanitize` | `sanitize="false"` | Sanitizing is enabled by default. Disable only for trusted content. |
 | `plain` | `plain` | Hides the toolbar. |
+| `headless` | `headless` | Renders only markdown content without card/chrome styling. |
+| `view` | `view="raw"` | `preview` (default) renders HTML; `raw` shows markdown source text. |
 | `breaks` | `breaks` | Enables GFM line breaks in marked. |
 
 ## Built-in plugins

@@ -6,15 +6,34 @@
     <title>netsi-marked NPM example</title>
     <link rel="stylesheet" href="https://unpkg.com/netsi-marked@0.1.0/styles/netsi-marked.css" />
     <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.11.1/styles/github.min.css" />
+    <style>
+      /* Fallback: emulate headless mode for published versions that do not support the attribute yet. */
+      netsi-marked[headless]::part(toolbar) {
+        display: none;
+      }
+
+      netsi-marked[headless]::part(wrapper) {
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        overflow: visible;
+      }
+
+      netsi-marked[headless]::part(content-slot) {
+        padding: 0;
+      }
+    </style>
     <script type="module">
       import 'https://esm.sh/netsi-marked';
+
+      await customElements.whenDefined('netsi-marked');
+      const element = document.querySelector('netsi-marked');
+      const markdownTemplate = document.getElementById('demo-markdown');
+      element.markdown = markdownTemplate.textContent.trim();
     </script>
   </head>
   <body>
-    <main class="demo-shell">
-      <h1>NPM usage</h1>
-      <netsi-marked plugins="mermaid,code-enhance,heading-anchors">
-        <template type="text/markdown">
+    <script id="demo-markdown" type="text/markdown">
 # My Big TOE inspired markdown demo
 
 This test content is inspired by Thomas Campbell's *My Big TOE* vocabulary: consciousness, intent, entropy, feedback, probability, and virtual reality.
@@ -86,8 +105,10 @@ netsi-marked {
 | Intent | Direction behind a choice |
 | Feedback | Consequence data |
 | Entropy | Coherence or disorder trend |
-        </template>
-      </netsi-marked>
+    </script>
+    <main class="demo-shell">
+      <h1>NPM usage</h1>
+      <netsi-marked plain headless plugins="callouts,mermaid,code-enhance,heading-anchors"></netsi-marked>
     </main>
   </body>
 </html>

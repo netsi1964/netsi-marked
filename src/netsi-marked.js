@@ -53,6 +53,20 @@ button:focus-visible { outline: 3px solid color-mix(in srgb, var(--netsi-marked-
 .status { color: var(--netsi-marked-muted); font-size: 0.875rem; }
 .content-slot { padding: var(--netsi-marked-pad); }
 :host([plain]) .toolbar { display: none; }
+:host([headless]) .toolbar { display: none; }
+:host([headless]) .wrapper {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  overflow: visible;
+}
+:host([headless]) .content-slot { padding: 0; }
+.netsi-marked-content--raw {
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: var(--netsi-marked-mono);
+  line-height: 1.6;
+}
 @container (max-width: 32rem) {
   .toolbar { align-items: stretch; flex-direction: column; }
   .actions { justify-content: flex-start; }
@@ -60,7 +74,7 @@ button:focus-visible { outline: 3px solid color-mix(in srgb, var(--netsi-marked-
 `);
 
 export class NetsiMarked extends HTMLElement {
-  static observedAttributes = ['src', 'plugins', 'sanitize', 'locale', 'theme', 'plain'];
+  static observedAttributes = ['src', 'plugins', 'sanitize', 'locale', 'theme', 'plain', 'headless', 'view'];
   static locales = { ...locales };
   static plugins = builtInPlugins();
 
@@ -150,6 +164,10 @@ export class NetsiMarked extends HTMLElement {
     return this.getAttribute('sanitize') !== 'false';
   }
 
+  get view() {
+    return this.getAttribute('view') === 'raw' ? 'raw' : 'preview';
+  }
+
   async render() {
     this.#abort?.abort();
     this.#abort = new AbortController();
@@ -160,6 +178,18 @@ export class NetsiMarked extends HTMLElement {
       this.#setStatus(this.#t('loading'));
       const markdown = await this.#readMarkdown(signal);
       if (signal.aborted) return;
+
+      if (this.view === 'raw') {
+        this.#renderedHtml = '';
+        this.#content.classList.add('netsi-marked-content--raw');
+        this.#content.textContent = markdown;
+        this.#content.setAttribute('aria-label', this.#t('rawLabel'));
+        this.#setStatus(this.#t('raw'));
+        this.#dispatch('render-complete', { markdown, html: '', plugins: [], view: 'raw' });
+        return;
+      }
+
+      this.#content.classList.remove('netsi-marked-content--raw');
 
       const context = this.#context();
       let prepared = markdown;
@@ -185,7 +215,12 @@ export class NetsiMarked extends HTMLElement {
 
       for (const plugin of plugins) await plugin.afterRender?.(this.#content, context);
       this.#setStatus(this.#t('rendered'));
-      this.#dispatch('render-complete', { markdown, html: this.#content.innerHTML, plugins: plugins.map((p) => p.name) });
+      this.#dispatch('render-complete', {
+        markdown,
+        html: this.#content.innerHTML,
+        plugins: plugins.map((p) => p.name),
+        view: 'preview'
+      });
     } catch (error) {
       if (signal.aborted) return;
       this.#setStatus(this.#t('error'));
