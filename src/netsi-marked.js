@@ -83,6 +83,7 @@ export class NetsiMarked extends HTMLElement {
   #copyFormatted;
   #abort;
   #sourceMarkdown = '';
+  #initialMarkdown = '';
   #renderedHtml = '';
   #id = `netsi-marked-${crypto.randomUUID?.() ?? Math.random().toString(36).slice(2)}`;
 
@@ -111,6 +112,8 @@ export class NetsiMarked extends HTMLElement {
 
   connectedCallback() {
     this.#upgradeProperty('markdown');
+    // Capture any inline markdown/template content before it gets replaced by the render host.
+    this.#initialMarkdown = this.#extractInitialMarkdown();
     this.#ensureContentHost();
     this.#updateLabels();
     this.render();
@@ -127,7 +130,7 @@ export class NetsiMarked extends HTMLElement {
   }
 
   get markdown() {
-    return this.#sourceMarkdown || this.textContent.trim();
+    return this.#sourceMarkdown || this.getAttribute('markdown') || this.#initialMarkdown;
   }
 
   set markdown(value) {
@@ -236,7 +239,7 @@ export class NetsiMarked extends HTMLElement {
       if (!response.ok) throw new Error(`Could not fetch ${this.getAttribute('src')}: ${response.status}`);
       return response.text();
     }
-    return this.#sourceMarkdown || this.getAttribute('markdown') || this.#extractInitialMarkdown();
+    return this.#sourceMarkdown || this.getAttribute('markdown') || this.#initialMarkdown;
   }
 
   #extractInitialMarkdown() {

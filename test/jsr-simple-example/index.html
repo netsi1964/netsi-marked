@@ -4,13 +4,94 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>netsi-marked JSR example</title>
-    <link rel="stylesheet" href="../../styles/netsi-marked.css" />
-    <script type="module" src="./main.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/netsi-marked@0.1.0/styles/netsi-marked.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.11.1/styles/github.min.css" />
+    <script type="module">
+      import 'https://esm.sh/jsr/@netsi/marked';
+
+      await customElements.whenDefined('netsi-marked');
+      const element = document.querySelector('netsi-marked');
+      const markdownTemplate = document.getElementById('demo-markdown');
+      element.markdown = markdownTemplate.textContent.trim();
+    </script>
   </head>
   <body>
+    <script id="demo-markdown" type="text/markdown">
+# My Big TOE inspired markdown demo
+
+This test content is inspired by Thomas Campbell's *My Big TOE* vocabulary: consciousness, intent, entropy, feedback, probability, and virtual reality.
+
+> [!NOTE]
+> This demo is not an official summary of Thomas Campbell's work. It is sample markdown for testing rendering features.
+
+## Consciousness feedback loop
+
+```mermaid
+flowchart TD
+  A[Consciousness unit] --> B[Intent]
+  B --> C[Choice]
+  C --> D[Feedback]
+  D --> E{Lower entropy?}
+  E -- Yes --> F[More coherent interaction]
+  E -- No --> G[Learn from consequence]
+  F --> A
+  G --> A
+```
+
+## Probability and decision space
+
+```mermaid
+stateDiagram-v2
+  [*] --> CurrentExperience
+  CurrentExperience --> ChoiceA: Caring intent
+  CurrentExperience --> ChoiceB: Fear-based intent
+  ChoiceA --> LowerEntropy
+  ChoiceB --> HigherEntropy
+  LowerEntropy --> Feedback
+  HigherEntropy --> Feedback
+  Feedback --> CurrentExperience
+```
+
+## Code formatting examples
+
+JavaScript:
+
+```js
+const intent = 'coherent';
+const entropyTrend = intent === 'coherent' ? 'lowering' : 'increasing';
+console.log({ intent, entropyTrend });
+```
+
+HTML:
+
+```html
+<netsi-marked plugins="mermaid,code-enhance,callouts" locale="da">
+  <template type="text/markdown">
+# Hello virtual reality
+  </template>
+</netsi-marked>
+```
+
+CSS:
+
+```css
+netsi-marked {
+  --netsi-marked-accent: #6f42c1;
+  --netsi-marked-radius: 1rem;
+}
+```
+
+## Table
+
+| MBT term | Demo interpretation |
+|---|---|
+| Intent | Direction behind a choice |
+| Feedback | Consequence data |
+| Entropy | Coherence or disorder trend |
+    </script>
     <main class="demo-shell">
       <h1>JSR usage</h1>
-      <netsi-marked src="../markdown/simple-mbt.md" plugins="mermaid,code-enhance,heading-anchors"></netsi-marked>
+      <netsi-marked plugins="callouts,mermaid,code-enhance,heading-anchors"></netsi-marked>
     </main>
   </body>
 </html>
