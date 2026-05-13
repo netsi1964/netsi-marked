@@ -22,3 +22,18 @@ test('jsr entrypoints declare self types and published declaration files', async
 
   assert.ok(jsr.publish.include.includes('src/**/*.d.ts'));
 });
+
+test('jsr declaration entrypoints keep module docs', async () => {
+  const declarations = [
+    '../src/index.d.ts',
+    '../src/netsi-marked.d.ts',
+    '../src/plugins.d.ts',
+    '../src/locales.d.ts',
+    '../src/built-ins.d.ts'
+  ];
+
+  for (const declaration of declarations) {
+    const source = await readFile(new URL(declaration, import.meta.url), 'utf8');
+    assert.match(source, /@module\b/, `${declaration} should include module docs for JSR`);
+  }
+});

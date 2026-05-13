@@ -1,6 +1,6 @@
 {
   "name": "netsi-marked",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A vanilla JS custom element that renders Markdown with marked, plugins, Mermaid diagrams, a11y, i18n, CSS variables and copy actions.",
   "type": "module",
   "module": "./src/index.js",
