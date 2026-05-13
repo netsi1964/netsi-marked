@@ -7,6 +7,8 @@ on:
 jobs:
   npm:
     runs-on: ubuntu-latest
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -15,10 +17,10 @@ jobs:
           registry-url: https://registry.npmjs.org
       - run: npm ci
       - run: npm test
-      - if: ${{ secrets.NPM_TOKEN != '' }}
+      - if: env.NPM_TOKEN != ''
         run: npm publish --access public
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ env.NPM_TOKEN }}
   jsr:
     runs-on: ubuntu-latest
     permissions:
