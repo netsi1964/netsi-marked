@@ -1,3 +1,9 @@
+/* @ts-self-types="./built-ins.d.ts" */
+
+/**
+ * Optional helpers for customized built-in elements that integrate with the
+ * main netsi-marked preview element.
+ */
 import { NetsiMarked } from './netsi-marked.js';
 
 /**
@@ -10,6 +16,9 @@ import { NetsiMarked } from './netsi-marked.js';
  * built-in elements.
  */
 export class NetsiMarkedTextarea extends HTMLTextAreaElement {
+  /**
+   * Syncs textarea input into the preview target defined by `preview-target`.
+   */
   connectedCallback() {
     const target = this.getAttribute('preview-target');
     if (!target) return;
@@ -23,6 +32,10 @@ export class NetsiMarkedTextarea extends HTMLTextAreaElement {
   }
 }
 
+/**
+ * Registers the optional customized built-in preview helpers when the current
+ * browser supports them.
+ */
 export function defineNetsiMarkedBuiltIns() {
   if (!supportsCustomizedBuiltIns()) return false;
   if (!customElements.get('netsi-marked-textarea')) {
@@ -31,6 +44,9 @@ export function defineNetsiMarkedBuiltIns() {
   return true;
 }
 
+/**
+ * Detects support for customized built-in elements in the current browser.
+ */
 export function supportsCustomizedBuiltIns() {
   try {
     const name = `x-test-${Math.random().toString(36).slice(2)}`;

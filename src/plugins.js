@@ -1,8 +1,16 @@
+/* @ts-self-types="./plugins.d.ts" */
+
+/**
+ * Built-in plugin factories for Mermaid diagrams, callouts, code enhancement,
+ * heading anchors, and external link hardening.
+ */
 const DEFAULT_HIGHLIGHT_THEME = 'https://esm.sh/@highlightjs/cdn-assets@11.11.1/es/styles/github.min.css?raw';
 const DEFAULT_HIGHLIGHT_DARK_THEME = 'https://esm.sh/@highlightjs/cdn-assets@11.11.1/es/styles/github-dark.min.css?raw';
 
+/**
+ * Creates a plugin that lazy-loads Mermaid for fenced `mermaid` code blocks.
+ */
 export function createMermaidPlugin(options = {}) {
-  const fencePattern = /<pre><code class="language-mermaid">([\s\S]*?)<\/code><\/pre>/gi;
   return {
     name: 'mermaid',
     test(markdown) {
@@ -36,6 +44,9 @@ export function createMermaidPlugin(options = {}) {
   };
 }
 
+/**
+ * Creates a plugin that adds anchor links to rendered headings.
+ */
 export function createHeadingAnchorPlugin(options = {}) {
   return {
     name: 'heading-anchors',
@@ -59,6 +70,9 @@ export function createHeadingAnchorPlugin(options = {}) {
   };
 }
 
+/**
+ * Creates a plugin that adds code highlighting and copy buttons to code blocks.
+ */
 export function createCodeEnhancePlugin(options = {}) {
   return {
     name: 'code-enhance',
@@ -104,6 +118,9 @@ export function createCodeEnhancePlugin(options = {}) {
   };
 }
 
+/**
+ * Creates a plugin that hardens external links with safe target and rel values.
+ */
 export function createExternalLinksPlugin() {
   return {
     name: 'external-links',
@@ -117,6 +134,9 @@ export function createExternalLinksPlugin() {
   };
 }
 
+/**
+ * Creates a plugin that transforms GitHub-style callouts into semantic asides.
+ */
 export function createCalloutPlugin() {
   return {
     name: 'callouts',
@@ -129,6 +149,9 @@ export function createCalloutPlugin() {
   };
 }
 
+/**
+ * Returns the default built-in plugin list used by the custom element.
+ */
 export function builtInPlugins() {
   return [
     createCalloutPlugin(),
@@ -153,6 +176,9 @@ function decodeHtml(value) {
   return textarea.value;
 }
 
+/**
+ * Default Highlight.js theme URLs used by the code enhancement plugin.
+ */
 export const highlightThemes = {
   light: DEFAULT_HIGHLIGHT_THEME,
   dark: DEFAULT_HIGHLIGHT_DARK_THEME

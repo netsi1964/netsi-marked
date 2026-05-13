@@ -1,6 +1,6 @@
 {
   "name": "@netsi/marked",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "exports": {
     ".": "./src/index.js",
@@ -12,6 +12,7 @@
   "publish": {
     "include": [
       "src/**/*.js",
+      "src/**/*.d.ts",
       "styles/**/*.css",
       "README.md",
       "LICENSE"

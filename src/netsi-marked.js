@@ -1,3 +1,9 @@
+/* @ts-self-types="./netsi-marked.d.ts" */
+
+/**
+ * Custom element entrypoint for rendering Markdown with built-in plugin support,
+ * sanitizing, locale-aware labels, and copy actions.
+ */
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 import { builtInPlugins } from './plugins.js';
@@ -73,19 +79,32 @@ button:focus-visible { outline: 3px solid color-mix(in srgb, var(--netsi-marked-
 }
 `);
 
+/**
+ * Browser custom element that renders Markdown into light DOM and applies
+ * optional enhancements such as Mermaid diagrams and code copy buttons.
+ */
 export class NetsiMarked extends HTMLElement {
   static observedAttributes = ['src', 'plugins', 'sanitize', 'locale', 'theme', 'plain', 'headless', 'view'];
   static locales = { ...locales };
   static plugins = builtInPlugins();
 
+  /**
+   * Registers the custom element if it has not already been defined.
+   */
   static define(tagName = 'netsi-marked') {
     if (!customElements.get(tagName)) customElements.define(tagName, this);
   }
 
+  /**
+   * Adds a plugin to the list of plugins available to all instances.
+   */
   static use(plugin) {
     this.plugins = [...this.plugins, plugin];
   }
 
+  /**
+   * Merges locale messages into the active locale registry.
+   */
   static setLocale(name, messages) {
     this.locales[name] = mergeLocale(this.locales[name] ?? {}, messages);
   }
@@ -143,31 +162,53 @@ export class NetsiMarked extends HTMLElement {
     this.render();
   }
 
+  /**
+   * Returns the current markdown source, whether it came from an attribute,
+   * assigned property, inline template, or fetched source.
+   */
   get markdown() {
     return this.#sourceMarkdown || this.getAttribute('markdown') || this.#initialMarkdown;
   }
 
+  /**
+   * Assigns markdown content and triggers a rerender once connected.
+   */
   set markdown(value) {
     this.#sourceMarkdown = String(value ?? '');
     if (this.isConnected) this.render();
   }
 
+  /**
+   * Returns the active locale code used for UI labels.
+   */
   get locale() {
     return this.getAttribute('locale') || document.documentElement.lang || 'en';
   }
 
+  /**
+   * Returns the theme hint used by theme-aware plugins.
+   */
   get theme() {
     return this.getAttribute('theme') || document.documentElement.dataset.theme || preferredTheme();
   }
 
+  /**
+   * Indicates whether rendered HTML should be sanitized.
+   */
   get sanitize() {
     return this.getAttribute('sanitize') !== 'false';
   }
 
+  /**
+   * Returns the current rendering mode.
+   */
   get view() {
     return this.getAttribute('view') === 'raw' ? 'raw' : 'preview';
   }
 
+  /**
+   * Reads markdown, renders it, and runs the configured plugin pipeline.
+   */
   async render() {
     this.#abort?.abort();
     this.#abort = new AbortController();
@@ -229,6 +270,9 @@ export class NetsiMarked extends HTMLElement {
     }
   }
 
+  /**
+   * Copies the current markdown source to the clipboard.
+   */
   async copyMarkdown() {
     const markdown = await this.#readMarkdown();
     await navigator.clipboard.writeText(markdown);
@@ -236,6 +280,10 @@ export class NetsiMarked extends HTMLElement {
     this.#dispatch('copy', { type: 'markdown' });
   }
 
+  /**
+   * Copies the rendered content as rich HTML when supported, with plain-text
+   * fallback for older environments.
+   */
   async copyFormatted() {
     const html = this.#content.innerHTML || this.#renderedHtml;
     const plain = this.#content.innerText;

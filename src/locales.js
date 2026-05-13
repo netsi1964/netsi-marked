@@ -1,3 +1,8 @@
+/* @ts-self-types="./locales.d.ts" */
+
+/**
+ * Built-in locale messages used by the netsi-marked toolbar and status labels.
+ */
 export const locales = {
   en: {
     copyMarkdown: 'Copy MD',
@@ -27,6 +32,9 @@ export const locales = {
   }
 };
 
+/**
+ * Creates a locale object by shallow-merging a base dictionary with overrides.
+ */
 export function mergeLocale(base = {}, override = {}) {
   return { ...base, ...override };
 }
